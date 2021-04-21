@@ -43,6 +43,11 @@ Create a partition  on the disc, create a physical  volume, then create a volume
 Instead of formating the disks as `ext4` you will have to format them as `xfs`
 Ensure there are 3 Logical Volumes. `lv-opt` `lv-apps`, and `lv-logs`.
 
+![alt text](image7.jpg)
+
+![alt text](image6.jpg)
+
+
 Create mount points on `/mnt `directory for the logical volumes as follow: 
 
 Mount `lv-apps` on `/mnt/apps` - To be used by webservers 
@@ -52,6 +57,18 @@ Mount `lv-logs` on /`mnt/logs` - To be used by webserver logs
 Mount `lv-opt` on `/mnt/opt`
 
 
+![alt text](image8.jpg)
+
+[alt text](image9.jpg)
 
 
+Install NFS server, configure it to start on reboot and make sure it is u and running
 
+```
+sudo yum -y update
+sudo yum install nfs-utils -y
+sudo systemctl start nfs-server.service
+sudo systemctl enable nfs-server.service
+sudo systemctl status nfs-server.service
+
+```
