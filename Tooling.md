@@ -25,3 +25,33 @@ the last one would be a database server with Ubuntu 20.0.4 Operating system
 	
 ![alt text](image1.jpg)
 
+Create a logical volume with size 15gb,the same AZ as your server then attach this logical volume to your NFS server.
+
+![alt text](image2.jpg)
+
+Connect to your NFS server and run 
+`lsblk` to view the disc  attached
+
+![alt text](image3.jpg)
+
+Create a partition  on the disc, create a physical  volume, then create a volume group then create a  logical volume
+
+![alt text](image4.jpg)
+
+![alt text](image5.jpg)
+
+Instead of formating the disks as `ext4` you will have to format them as `xfs`
+Ensure there are 3 Logical Volumes. `lv-opt` `lv-apps`, and `lv-logs`.
+
+Create mount points on `/mnt `directory for the logical volumes as follow: 
+
+Mount `lv-apps` on `/mnt/apps` - To be used by webservers 
+
+Mount `lv-logs` on /`mnt/logs` - To be used by webserver logs 
+
+Mount `lv-opt` on `/mnt/opt`
+
+
+
+
+
