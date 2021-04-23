@@ -127,7 +127,14 @@ NB:in my case,i opened traffic to all
 
 ### Step2: CONFIGURE THE DATABASE SERVER ###
 
-Install `MySQL` server
+Install `MySQL` server on your db instance
+
+```
+Sudo install mysql-server
+Sudo systemctl start mysql
+Sudo systemctl enable mysql
+Sudo systemctl status mysql
+```
 
 Create a database and name it `tooling`
 
@@ -139,4 +146,28 @@ Grant permission to `webaccess` user on `tooling` database to do anything only f
 
 ![alt text](image15.jpg)
 
+### Step3: CONFIGURE THE WEB SERVERS ###
+Lauch one of your web EC2 instance with RHEL 8 Operating System and Install NFS client
 
+```
+sudo yum install nfs-utils nfs4-acl-tools -y
+```
+
+Mount /`var/www/ `and target the NFS server’s export for apps
+
+```
+sudo mkdir /var/www
+sudo mount -t nfs -o rw,nosuid <NFS-Server-Private-IP-Address>:/mnt/apps /var/www
+
+```
+![alt text](image16.jpg)
+
+![alt text](image17.jpg)
+
+
+Verify that NFS was mounted successfully by running
+ `df -h`
+
+  Make sure that the changes will persist on Web Server after reboot:
+
+`sudo vi /etc/fstab`
