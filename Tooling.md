@@ -15,7 +15,7 @@ In this project you will implement a solution that consists of following compone
 **Code Repository:** GitHub
 
 
-### STEP 1 ###
+### STEP 1 : CONFIGURE NFS SERVER ###
 
 On your AWS console, Spin up a 5 new EC2 instances;  
 3 of which would be webservers with RHEL Linux 8 Operating System,
@@ -59,7 +59,7 @@ Mount `lv-opt` on `/mnt/opt`
 
 ![alt text](image8.jpg)
 
-[alt text](image9.jpg)
+![alt text](image9.jpg)
 
 
 Install NFS server, configure it to start on reboot and make sure it is u and running
@@ -72,3 +72,71 @@ sudo systemctl enable nfs-server.service
 sudo systemctl status nfs-server.service
 
 ```
+
+![alt text](image10.jpg)
+
+Make sure we set up permission that will allow our Web servers to read, write and execute files on NFS:
+
+```
+sudo chown -R nobody: /mnt/apps
+sudo chown -R nobody: /mnt/logs
+sudo chown -R nobody: /mnt/opt
+
+sudo chmod -R 777 /mnt/apps
+sudo chmod -R 777 /mnt/logs
+sudo chmod -R 777 /mnt/opt
+
+```
+
+Restart the NFS Server
+```
+sudo systemctl restart nfs-server.service
+```
+
+![alt text](image11.jpg)
+
+
+Configure access to NFS for clients within the same subnet .To check your subnet cidr - open your EC2 details in AWS web console and locate ‘Networking’ tab and open a Subnet link:
+
+```
+sudo vi /etc/exports
+
+/mnt/apps <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+/mnt/logs <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+/mnt/opt <Subnet-CIDR>(rw,sync,no_all_squash,no_root_squash)
+
+Esc + :wq!
+
+sudo exportfs -arv
+```
+![alt text](image12.jpg)
+
+
+
+Check which port is used by NFS and open it using Security Groups (add new Inbound Rule)
+
+```
+rpcinfo -p | grep nfs
+
+```
+
+![alt text](image13.jpg)
+
+NB:in my case,i opened traffic to all
+
+
+### Step2: CONFIGURE THE DATABASE SERVER ###
+
+Install `MySQL` server
+
+Create a database and name it `tooling`
+
+Create a database user and name it `webaccess`
+
+Grant permission to `webaccess` user on `tooling` database to do anything only from the webservers subnet cidr
+
+![alt text](image14.jpg)
+
+![alt text](image15.jpg)
+
+
