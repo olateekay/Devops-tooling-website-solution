@@ -233,4 +233,4 @@ $ sudo setsebool -P httpd_can_network_connect_db 1
 Open the website in your browser http:///index.php
 
 
-![alt text](image18.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image18.png)
