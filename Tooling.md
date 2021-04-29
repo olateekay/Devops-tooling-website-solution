@@ -1,3 +1,4 @@
+# Devops Tooling Website Solution #
 As a member of a DevOps team, you will implement a tooling website solution which makes access to DevOps tools within the corporate infrastructure easily accessible.
 
 In this project you will implement a solution that consists of following components:
@@ -171,3 +172,35 @@ Verify that NFS was mounted successfully by running
   Make sure that the changes will persist on Web Server after reboot:
 
 `sudo vi /etc/fstab`
+
+`<NFS-Server-Private-IP-Address>:/mnt/apps /var/www nfs defaults 0 0`
+
+Install Apache
+```
+$ sudo yum install httpd -y
+
+$ sudo systemctl start httpd
+$ sudo systemctl enable httpd
+Created symlink /etc/systemd/system/multi-user.target.wants/httpd.service → /
+usr/lib/systemd/system/httpd.service.
+ ```
+ Repeat steps 1-5 for the other two Web Servers.
+
+Verify that Apache files and directories are available on the Web Server in /`var/www` and also on the NFS server in /mnt/apps. If you see the same files - it means NFS is mounted correctly.
+
+Locate the log folder for Apache on the Web Server and mount it to NFS server’s export for logs.
+Before mounting, try to backup the log file. mounting would replace everything in there 
+
+```
+$ sudo mv /var/log/httpd /var/log/httpdyke
+
+```
+
+```
+sudo mount -t -o nfs rw,nosuid 10.154.0.6:/mnt/logs
+```
+Fork the tooling source code from Darey.io Github Account to your Github account. 
+Deploy the tooling website’s code to the Webserver. Ensure that the html folder from the repository is deployed to `/var/www/html`
+
+
+
