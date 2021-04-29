@@ -24,29 +24,29 @@ On your AWS console, Spin up a 5 new EC2 instances;
 the last one would be a database server with Ubuntu 20.0.4 Operating system
 
 	
-![alt text](image1.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image1.png)
 
 Create a logical volume with size 15gb,the same AZ as your server then attach this logical volume to your NFS server.
 
-![alt text](image2.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image2.png)
 
 Connect to your NFS server and run 
 `lsblk` to view the disc  attached
 
-![alt text](image3.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image3.png)
 
 Create a partition  on the disc, create a physical  volume, then create a volume group then create a  logical volume
 
-![alt text](image4.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image4.png)
 
-![alt text](image5.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image5.png)
 
 Instead of formating the disks as `ext4` you will have to format them as `xfs`
 Ensure there are 3 Logical Volumes. `lv-opt` `lv-apps`, and `lv-logs`.
 
-![alt text](image7.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image7.png)
 
-![alt text](image6.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image6.png)
 
 
 Create mount points on `/mnt `directory for the logical volumes as follow: 
@@ -58,9 +58,9 @@ Mount `lv-logs` on /`mnt/logs` - To be used by webserver logs
 Mount `lv-opt` on `/mnt/opt`
 
 
-![alt text](image8.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image8.png)
 
-![alt text](image9.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image9.png)
 
 
 Install NFS server, configure it to start on reboot and make sure it is u and running
@@ -74,7 +74,7 @@ sudo systemctl status nfs-server.service
 
 ```
 
-![alt text](image10.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image10%201.00.36%20PM.png)
 
 Make sure we set up permission that will allow our Web servers to read, write and execute files on NFS:
 
@@ -94,7 +94,7 @@ Restart the NFS Server
 sudo systemctl restart nfs-server.service
 ```
 
-![alt text](image11.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image11.png)
 
 
 Configure access to NFS for clients within the same subnet .To check your subnet cidr - open your EC2 details in AWS web console and locate ‘Networking’ tab and open a Subnet link:
@@ -110,7 +110,7 @@ Esc + :wq!
 
 sudo exportfs -arv
 ```
-![alt text](image12.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image12.png)
 
 
 
@@ -121,7 +121,7 @@ rpcinfo -p | grep nfs
 
 ```
 
-![alt text](image13.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image13.png)
 
 NB:in my case,i opened traffic to all
 
@@ -143,9 +143,9 @@ Create a database user and name it `webaccess`
 
 Grant permission to `webaccess` user on `tooling` database to do anything only from the webservers subnet cidr
 
-![alt text](image14.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image14.png)
 
-![alt text](image15.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image15.png)
 
 ### Step3: CONFIGURE THE WEB SERVERS ###
 Lauch one of your web EC2 instance with RHEL 8 Operating System and Install NFS client
@@ -161,9 +161,9 @@ sudo mkdir /var/www
 sudo mount -t nfs -o rw,nosuid <NFS-Server-Private-IP-Address>:/mnt/apps /var/www
 
 ```
-![alt text](image16.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image16.png)
 
-![alt text](image17.jpg)
+![alt text](https://github.com/olateekay/Devops-tooling-website-solution/blob/main/Images/image17.png)
 
 
 Verify that NFS was mounted successfully by running
