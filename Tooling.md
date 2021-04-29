@@ -200,7 +200,37 @@ $ sudo mv /var/log/httpd /var/log/httpdyke
 sudo mount -t -o nfs rw,nosuid 10.154.0.6:/mnt/logs
 ```
 Fork the tooling source code from Darey.io Github Account to your Github account. 
+Deploy the tooling website’s code to the Webserver. 
+Ensure that the html folder from the repository is deployed to `/var/www/html`
+
 Deploy the tooling website’s code to the Webserver. Ensure that the html folder from the repository is deployed to `/var/www/html`
+```
+$ cd /var/www/html
+$ ls
+
+admin_tooling.php  img        README.md     tooling_stylesheets.css
+create_user.php    index.php  register.php
+functions.php      login.php  style.css
+```
+Update the website’s configuration to connect to the database (in functions.php file), then apply the tooling-db.sql script.
+
+```
+$ mysql -h 34.82.54.113 -u webaccess -p to oling < tooling-db.sql Enter password:
+
+```
+Disable SELinux - open following config file 
+```
+sudo vi /etc/sysconfig/selinux and set SELINUX=disabled.
+```
+and run the following commands
+
+```
+$ sudo setsebool -P httpd_can_network_connect 1
+$ sudo setsebool -P httpd_use_nfs 1
+$ sudo setsebool -P httpd_can_network_connect_db 1
+
+```
+Open the website in your browser http:///index.php
 
 
-
+![alt text](image18.jpg)
